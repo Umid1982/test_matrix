@@ -21,6 +21,7 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'id_ref'
     ];
 
     /**
@@ -44,5 +45,26 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+    public function matrixTables()
+    {
+        return $this->hasMany(MatrixTable::class, 'id_user');
+    }
+
+    public function invitedMatrixTables()
+    {
+        return $this->hasMany(MatrixTable::class, 'user1')
+            ->orWhere('user2', $this->id)
+            ->orWhere('user3', $this->id);
+    }
+    public function referrals()
+    {
+        return $this->hasMany(User::class, 'id_ref');
+    }
+
+    public function balances()
+    {
+        return $this->hasMany(UserBalance::class, 'id_user');
     }
 }
