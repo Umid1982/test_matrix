@@ -1,11 +1,12 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Api;
 
-use App\Models\Balance;
+use App\Http\Controllers\Controller;
+use App\Models\MatrixProduct;
 use Illuminate\Http\Request;
 
-class BalanceController extends Controller
+class MatrixProductController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -34,7 +35,7 @@ class BalanceController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Balance $balance)
+    public function show(MatrixProduct $matrixProduct)
     {
         //
     }
@@ -42,7 +43,7 @@ class BalanceController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Balance $balance)
+    public function edit(MatrixProduct $matrixProduct)
     {
         //
     }
@@ -50,7 +51,7 @@ class BalanceController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Balance $balance)
+    public function update(Request $request, MatrixProduct $matrixProduct)
     {
         //
     }
@@ -58,7 +59,7 @@ class BalanceController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Balance $balance)
+    public function destroy(MatrixProduct $matrixProduct)
     {
         //
     }
