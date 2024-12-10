@@ -24,13 +24,15 @@ class UserIdRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'user_id' => ['required', 'integer', Rule::exists('users', 'id')],
+            'table_id' => ['required', 'integer', Rule::exists('matrix_tables', 'id')],
         ];
     }
 
     public function toDTO(): CloseTableDTO
     {
-        return new CloseTableDTO($this->get('user_id'));
+        return new CloseTableDTO(
+            $this->user()->id,
+            $this->get('table_id'));
     }
 
 }

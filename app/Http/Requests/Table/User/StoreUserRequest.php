@@ -34,6 +34,7 @@ class StoreUserRequest extends FormRequest
         return new AddUserTableDTO(
             $this->get('table_id'),
             $this->get('user_id'),
+            $this->user()->id,
         );
     }
 }
