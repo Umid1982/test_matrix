@@ -6,7 +6,8 @@ class AddUserTableDTO
 {
     public function __construct(
         public int $tableId,
-        public int $userId
+        public int $userId,
+        public int $AuthUserId
     )
     {
     }

@@ -10,6 +10,7 @@ use App\Http\Requests\Table\User\StoreUserRequest;
 use App\Http\Requests\Table\UserIdRequest;
 use App\Http\Resources\AddUserTableResource;
 use App\Http\Resources\TableResource;
+use App\Http\Resources\UserBalanceResource;
 use App\Models\MatrixTable;
 use App\Services\MatrixTableService;
 use Illuminate\Http\Request;
@@ -45,10 +46,10 @@ class MatrixTableController extends Controller
     public function closeTable(UserIdRequest $request)
     {
         try {
-            $result = $this->service->closeTable($request->toDTO());
+            return response(UserBalanceResource::make($this->service->closeTable($request->toDTO())));
 
-            return response()->json($result);
         } catch (\Exception $e) {
+
             return response()->json(['error' => $e->getMessage()], 400);
         }
     }

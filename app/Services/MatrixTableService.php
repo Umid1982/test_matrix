@@ -42,7 +42,7 @@ class MatrixTableService
                     $table->status = 1; // Закрываем стол
                 }
 
-                $this->repository->update($table, $table->toArray());
+                $this->repository->update($table, $table->toArray(),$dto->AuthUserId);
                 return $table->refresh();
             }
         }
@@ -61,10 +61,6 @@ class MatrixTableService
     {
         $table = $this->repository->find($dto->tableId);
 
-        if (!$table) {
-            throw new \Exception('Стол не найден.');
-        }
-
         if ($table->status !== 1) {
             throw new \Exception('Стол еще не готов к закрытию.');
         }
@@ -72,37 +68,12 @@ class MatrixTableService
         // Расчет прибыли
         $profitPerUser = $this->repository->calculateProfit($table);
 
-        // Распределение прибыли
-        DB::transaction(function () use ($table, $profitPerUser) {
-            foreach (['user1', 'user2', 'user3'] as $userColumn) {
-                $userId = $table->{$userColumn};
-                if ($userId) {
-                    $this->distributeProfit($userId, $profitPerUser);
-                }
-            }
+        $balance = $this->repository->distributeProfit($dto->userId, $profitPerUser);
 
-            // Обновление статуса стола
-            $this->repository->update($table, ['status' => 2]); // 2 = Закрыт
-        });
+        // Обновление статуса стола
+        $this->repository->update($table, ['status' => 2]); // 2 = Закрыт
 
-        return [
-            'message' => 'Стол успешно закрыт.',
-            'profit_per_user' => $profitPerUser,
-        ];
+
+        return  $balance;
     }
-
-    protected function distributeProfit(int $userId, float $profit): void
-    {
-        UserBalance::query()->updateOrInsert(
-            [
-                'id_user' => $userId,
-                'id_balance' => 1,
-            ],
-            [
-                'sum' => $profit ? +$profit : $profit,
-            ]
-        );
-
-    }
-
 }
